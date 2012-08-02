@@ -85,7 +85,8 @@ class SimpleMultipartEntity implements HttpEntity {
     public void addPart(final String key, final String value) {
         writeFirstBoundaryIfNeeds();
         try {
-            out.write(("Content-Disposition: form-data; name=\"" +key+"\"\r\n\r\n").getBytes());
+            out.write(("Content-Disposition: form-data; name=\"" +key+"\"\r\n").getBytes());
+            out.write("Content-Type: text/plain; charset=utf-8\r\n\r\n".getBytes());
             out.write(value.getBytes());
             out.write(("\r\n--" + boundary + "\r\n").getBytes());
         } catch (final IOException e) {

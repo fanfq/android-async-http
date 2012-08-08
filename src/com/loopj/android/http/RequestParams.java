@@ -209,6 +209,7 @@ public class RequestParams {
         } else {
             try {
                 entity = new UrlEncodedFormEntity(getParamsList(), ENCODING);
+                
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }

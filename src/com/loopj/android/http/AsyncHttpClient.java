@@ -68,6 +68,7 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.SyncBasicHttpContext;
 
 import android.content.Context;
+import android.util.Log;
 
 /**
  * The AsyncHttpClient can be used to make asynchronous GET, POST, PUT and
@@ -98,6 +99,7 @@ public class AsyncHttpClient {
 	private static final int DEFAULT_SOCKET_BUFFER_SIZE = 8192;
 	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
 	private static final String ENCODING_GZIP = "gzip";
+	private static final String CHARSET = "charset=utf-8";
 
 	private static int maxConnections = DEFAULT_MAX_CONNECTIONS;
 	private static int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
@@ -466,7 +468,11 @@ public class AsyncHttpClient {
 	public void post(Context context, String url, RequestParams params,
 			AsyncHttpResponseHandler responseHandler) {
 		HttpEntity entity = paramsToEntity(params);
-		post(context, url, entity, entity.getContentType().getValue(), responseHandler);
+		StringBuilder sb = new StringBuilder(entity.getContentType().getValue());
+		if (!sb.toString().contains(CHARSET)) {
+			sb.append("; ").append(CHARSET);
+		}
+		post(context, url, entity, sb.toString(), responseHandler);
 	}
 
 	/**

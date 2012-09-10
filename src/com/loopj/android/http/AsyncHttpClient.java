@@ -91,7 +91,7 @@ import android.util.Log;
  * </pre>
  */
 public class AsyncHttpClient {
-	private static final String VERSION = "1.4.0";
+    private static final String VERSION = "1.4.1";
 
 	private static final int DEFAULT_MAX_CONNECTIONS = 10;
 	private static final int DEFAULT_SOCKET_TIMEOUT = 10 * 1000;
@@ -500,41 +500,53 @@ public class AsyncHttpClient {
 				responseHandler, context);
 	}
 
-	/**
-	 * Perform a HTTP POST request and track the Android Context which initiated
-	 * the request. Set headers only for this request
-	 * 
-	 * @param context
-	 *            the Android Context which initiated the request.
-	 * @param url
-	 *            the URL to send the request to.
-	 * @param headers
-	 *            set headers only for this request
-	 * @param entity
-	 *            a raw {@link HttpEntity} to send with the request, for
-	 *            example, use this to send string/json/xml payloads to a server
-	 *            by passing a {@link org.apache.http.entity.StringEntity}.
-	 * @param contentType
-	 *            the content type of the payload you are sending, for example
-	 *            application/json if sending a json payload.
-	 * @param responseHandler
-	 *            the response handler instance that should handle the response.
-	 */
-	public void post(Context context, String url, Header[] headers,
-			RequestParams params, String contentType,
-			AsyncHttpResponseHandler responseHandler) {
-		HttpEntityEnclosingRequestBase request = new HttpPost(url);
-		if (params != null)
-			request.setEntity(paramsToEntity(params));
-		if (headers != null)
-			request.setHeaders(headers);
-		sendRequest(httpClient, httpContext, request, contentType,
-				responseHandler, context);
-	}
+    /**
+     * Perform a HTTP POST request and track the Android Context which initiated
+     * the request. Set headers only for this request
+     * 
+     * @param context the Android Context which initiated the request.
+     * @param url the URL to send the request to.
+     * @param headers set headers only for this request
+     * @param params additional POST parameters to send with the request.
+     * @param contentType the content type of the payload you are sending, for
+     *        example application/json if sending a json payload.
+     * @param responseHandler the response handler instance that should handle
+     *        the response.
+     */
+    public void post(Context context, String url, Header[] headers, RequestParams params, String contentType,
+            AsyncHttpResponseHandler responseHandler) {
+        HttpEntityEnclosingRequestBase request = new HttpPost(url);
+        if(params != null) request.setEntity(paramsToEntity(params));
+        if(headers != null) request.setHeaders(headers);
+        sendRequest(httpClient, httpContext, request, contentType,
+                responseHandler, context);
+    }
 
-	//
-	// HTTP PUT Requests
-	//
+    /**
+     * Perform a HTTP POST request and track the Android Context which initiated
+     * the request. Set headers only for this request
+     *
+     * @param context the Android Context which initiated the request.
+     * @param url the URL to send the request to.
+     * @param headers set headers only for this request
+     * @param entity a raw {@link HttpEntity} to send with the request, for
+     *        example, use this to send string/json/xml payloads to a server by
+     *        passing a {@link org.apache.http.entity.StringEntity}.
+     * @param contentType the content type of the payload you are sending, for
+     *        example application/json if sending a json payload.
+     * @param responseHandler the response handler instance that should handle
+     *        the response.
+     */
+    public void post(Context context, String url, Header[] headers, HttpEntity entity, String contentType,
+            AsyncHttpResponseHandler responseHandler) {
+        HttpEntityEnclosingRequestBase request = addEntityToRequestBase(new HttpPost(url), entity);
+        if(headers != null) request.setHeaders(headers);
+        sendRequest(httpClient, httpContext, request, contentType, responseHandler, context);
+    }
+
+    //
+    // HTTP PUT Requests
+    //
 
 	/**
 	 * Perform a HTTP PUT request, without any parameters.

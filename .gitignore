@@ -9,3 +9,8 @@ gen/
 _layouts
 .DS_Store
 gh-pages
+#intellij
+*.iml
+*.ipr
+*.iws
+*.idea/

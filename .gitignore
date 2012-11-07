@@ -9,8 +9,11 @@ gen/
 _layouts
 .DS_Store
 gh-pages
+#mvn out
+target/
 #intellij
 *.iml
 *.ipr
 *.iws
 *.idea/
+>>>>>>> f6950f5d22daf01f8ee9047ea9fff2dd27cfa47a
